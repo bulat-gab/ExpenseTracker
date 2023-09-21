@@ -5,7 +5,7 @@
  * @format
  */
 
-import React from 'react';
+import React, {useState} from 'react';
 import type {PropsWithChildren} from 'react';
 import {
   SafeAreaView,
@@ -25,42 +25,40 @@ import {
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
 
-type SectionProps = PropsWithChildren<{
-  title: string;
-}>;
+import TransactionInput from './components/TransactionInput';
+import Transaction from './models/Transaction';
+import Section from './components/Section';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-function Section({children, title}: SectionProps): JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-  return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
-  );
-}
+import uuid from 'react-native-uuid';
 
-function App(): JSX.Element {
+
+const App: React.FC = () => {
   const isDarkMode = useColorScheme() === 'dark';
 
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
   };
+
+  const [transactions, setTransactions] = useState<Transaction[]>([]);
+
+  const addTransaction = async (title: string, category: string, amount: number) => {
+    try{
+      const id = uuid.v4().toString();
+      const date = new Date();
+      const newTransaction: Transaction = new Transaction(id, title, category, date, amount);
+  
+      console.log(newTransaction)
+      console.log(transactions)
+      
+      const serializedTx: string =       JSON.stringify(newTransaction);
+    } catch (error){
+      console.error('Error storing transaction:', error);
+    }
+
+
+
+  }
 
   return (
     <SafeAreaView style={backgroundStyle}>
@@ -71,7 +69,11 @@ function App(): JSX.Element {
       <ScrollView
         contentInsetAdjustmentBehavior="automatic"
         style={backgroundStyle}>
-        <Header />
+        <Header 
+        
+        
+        
+        />
         <View
           style={{
             backgroundColor: isDarkMode ? Colors.black : Colors.white,
@@ -80,16 +82,9 @@ function App(): JSX.Element {
             Edit <Text style={styles.highlight}>App.tsx</Text> to change this
             screen and then come back to see your edits.
           </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
+          <Section title="Add new transaction">
+            <TransactionInput onAddTransaction={addTransaction}/>
           </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
         </View>
       </ScrollView>
     </SafeAreaView>
