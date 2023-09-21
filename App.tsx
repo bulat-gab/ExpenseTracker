@@ -32,7 +32,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import uuid from 'react-native-uuid';
 
-
 const App: React.FC = () => {
   const isDarkMode = useColorScheme() === 'dark';
 
@@ -42,23 +41,30 @@ const App: React.FC = () => {
 
   const [transactions, setTransactions] = useState<Transaction[]>([]);
 
-  const addTransaction = async (title: string, category: string, amount: number) => {
-    try{
+  const addTransaction = async (
+    title: string,
+    category: string,
+    amount: number,
+  ) => {
+    try {
       const id = uuid.v4().toString();
       const date = new Date();
-      const newTransaction: Transaction = new Transaction(id, title, category, date, amount);
-  
-      console.log(newTransaction)
-      console.log(transactions)
-      
-      const serializedTx: string =       JSON.stringify(newTransaction);
-    } catch (error){
+      const newTransaction: Transaction = new Transaction(
+        id,
+        title,
+        category,
+        date,
+        amount,
+      );
+
+      console.log(newTransaction);
+      console.log(transactions);
+
+      const serializedTx: string = JSON.stringify(newTransaction);
+    } catch (error) {
       console.error('Error storing transaction:', error);
     }
-
-
-
-  }
+  };
 
   return (
     <SafeAreaView style={backgroundStyle}>
@@ -69,11 +75,7 @@ const App: React.FC = () => {
       <ScrollView
         contentInsetAdjustmentBehavior="automatic"
         style={backgroundStyle}>
-        <Header 
-        
-        
-        
-        />
+        <Header />
         <View
           style={{
             backgroundColor: isDarkMode ? Colors.black : Colors.white,
@@ -83,13 +85,13 @@ const App: React.FC = () => {
             screen and then come back to see your edits.
           </Section>
           <Section title="Add new transaction">
-            <TransactionInput onAddTransaction={addTransaction}/>
+            <TransactionInput onAddTransaction={addTransaction} />
           </Section>
         </View>
       </ScrollView>
     </SafeAreaView>
   );
-}
+};
 
 const styles = StyleSheet.create({
   sectionContainer: {
