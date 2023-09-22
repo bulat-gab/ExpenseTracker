@@ -5,93 +5,40 @@
  * @format
  */
 
-import React, {useState} from 'react';
-import type {PropsWithChildren} from 'react';
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-} from 'react-native';
+import React from 'react';
+import {Button, StyleSheet, Text, View} from 'react-native';
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
-
-import TransactionInput from './components/TransactionInput';
-import Transaction from './models/Transaction';
-import Section from './components/Section';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-
-import uuid from 'react-native-uuid';
 import Expenses from './components/Expenses';
+import {NavigationContainer} from '@react-navigation/native';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import TransactionAddPage from './components/TransactionAddPage';
 
-const App: React.FC = () => {
-  const isDarkMode = useColorScheme() === 'dark';
+import {useNavigation} from '@react-navigation/native';
 
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
-
-  const addTransaction = async (
-    title: string,
-    category: string,
-    amount: number,
-  ) => {
-    try {
-      const id = uuid.v4().toString();
-      const date = new Date();
-      const newTransaction: Transaction = new Transaction(
-        id,
-        title,
-        category,
-        date,
-        amount,
-      );
-
-      console.log(newTransaction);
-
-      await AsyncStorage.setItem(id, JSON.stringify(newTransaction));
-    } catch (error) {
-      console.error('Error storing transaction:', error);
-    }
-  };
+function HomeScreen() {
+  const navigation = useNavigation();
 
   return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar
-        barStyle={isDarkMode ? 'dark-content' : 'light-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
+    <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+      <Text>Home Screen</Text>
+      <Button
+        title="Add transaction"
+        onPress={() => navigation.navigate('Add transaction')}
       />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Section title="Step One Thirty Five">
-            Edit <Text style={styles.highlight}>App.tsx</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="Add new transaction">
-            <TransactionInput onAddTransaction={addTransaction} />
-          </Section>
-          {/* <Section title="Transactions:">
-            <Expenses />
-          </Section> */}
-          <Expenses />
-        </View>
-      </ScrollView>
-    </SafeAreaView>
+    </View>
+  );
+}
+
+const Stack = createNativeStackNavigator();
+
+const App: React.FC = () => {
+  return (
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen name="Home" component={HomeScreen} />
+        <Stack.Screen name="Add transaction" component={TransactionAddPage} />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 };
 
