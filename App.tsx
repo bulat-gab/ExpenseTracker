@@ -31,6 +31,7 @@ import Section from './components/Section';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import uuid from 'react-native-uuid';
+import Expenses from './components/Expenses';
 
 const App: React.FC = () => {
   const isDarkMode = useColorScheme() === 'dark';
@@ -38,8 +39,6 @@ const App: React.FC = () => {
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
   };
-
-  const [transactions, setTransactions] = useState<Transaction[]>([]);
 
   const addTransaction = async (
     title: string,
@@ -58,9 +57,8 @@ const App: React.FC = () => {
       );
 
       console.log(newTransaction);
-      console.log(transactions);
 
-      const serializedTx: string = JSON.stringify(newTransaction);
+      await AsyncStorage.setItem(id, JSON.stringify(newTransaction));
     } catch (error) {
       console.error('Error storing transaction:', error);
     }
@@ -87,6 +85,10 @@ const App: React.FC = () => {
           <Section title="Add new transaction">
             <TransactionInput onAddTransaction={addTransaction} />
           </Section>
+          {/* <Section title="Transactions:">
+            <Expenses />
+          </Section> */}
+          <Expenses />
         </View>
       </ScrollView>
     </SafeAreaView>

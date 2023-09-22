@@ -18,8 +18,30 @@ class Transaction {
     this.title = title;
     this.category = category;
     this.date = date;
-    this.description = description;
     this.amount = amount;
+    this.description = description;
+  }
+
+  static createFromObject(transactionObject: {
+    id: string;
+    title: string;
+    category: string;
+    date: Date;
+    amount: number;
+    description?: string;
+  }): Transaction {
+    if (transactionObject.amount <= 0) {
+      throw new Error('Amount must be greater than 0.');
+    }
+
+    return new Transaction(
+      transactionObject.id,
+      transactionObject.title,
+      transactionObject.category,
+      transactionObject.date,
+      transactionObject.amount,
+      transactionObject.description,
+    );
   }
 
   getId(): string {
