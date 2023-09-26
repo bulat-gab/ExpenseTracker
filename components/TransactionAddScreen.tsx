@@ -1,11 +1,11 @@
-import {View, Text} from 'react-native';
+import {View} from 'react-native';
 import React from 'react';
 import TransactionInput from './TransactionInput';
 import Transaction from '../models/Transaction';
 import uuid from 'react-native-uuid';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const TransactionAddPage = () => {
+const TransactionAddScreen = () => {
   const addTransaction = async (
     title: string,
     category: string,
@@ -37,4 +37,4 @@ const TransactionAddPage = () => {
   );
 };
 
-export default TransactionAddPage;
+export default TransactionAddScreen;

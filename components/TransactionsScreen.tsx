@@ -4,7 +4,7 @@ import React, {useEffect, useState} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Transaction from '../models/Transaction';
 
-const Expenses: React.FC = () => {
+const TransactionsScreen: React.FC = () => {
   const [data, setData] = useState<any>([]);
 
   const fetchData = async () => {
@@ -88,4 +88,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Expenses;
+export default TransactionsScreen;

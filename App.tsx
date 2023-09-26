@@ -8,36 +8,29 @@
 import React from 'react';
 import {Button, StyleSheet, Text, View} from 'react-native';
 
-import Expenses from './components/Expenses';
+import TransactionsScreen from './components/TransactionsScreen';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import TransactionAddPage from './components/TransactionAddPage';
+import TransactionAddScreen from './components/TransactionAddScreen';
+import {RootStackParamList} from './interfaces';
+import HomeScreen from './components/HomeScreen';
 
-import {useNavigation} from '@react-navigation/native';
-
-function HomeScreen() {
-  const navigation = useNavigation();
-
-  return (
-    <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-      <Text>Home Screen</Text>
-      <Button
-        title="Add transaction"
-        onPress={() => navigation.navigate('Add transaction')}
-      />
-    </View>
-  );
-}
-
-const Stack = createNativeStackNavigator();
+const RootStack = createNativeStackNavigator<RootStackParamList>();
 
 const App: React.FC = () => {
   return (
     <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen name="Home" component={HomeScreen} />
-        <Stack.Screen name="Add transaction" component={TransactionAddPage} />
-      </Stack.Navigator>
+      <RootStack.Navigator initialRouteName="Home">
+        <RootStack.Screen name="Home" component={HomeScreen} />
+        <RootStack.Screen
+          name="TransactionsPage"
+          component={TransactionsScreen}
+        />
+        <RootStack.Screen
+          name="TransactionAddPage"
+          component={TransactionAddScreen}
+        />
+      </RootStack.Navigator>
     </NavigationContainer>
   );
 };

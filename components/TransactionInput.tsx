@@ -1,6 +1,5 @@
 import React, {useState} from 'react';
-import type {PropsWithChildren} from 'react';
-import {Text, TextInput, View, Button, Alert} from 'react-native';
+import {TextInput, View, Button, Alert} from 'react-native';
 
 import styles from '../Styles';
 
