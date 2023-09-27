@@ -25,6 +25,7 @@ const TransactionInput: React.FC<TransactionInputProps> = ({
 
       if (isNaN(parsedAmount)) {
         Alert.alert('Please enter a valid amount.');
+        return;
       }
 
       onAddTransaction(title, category, parsedAmount);

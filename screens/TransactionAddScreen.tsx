@@ -1,13 +1,13 @@
 import {View} from 'react-native';
 import React from 'react';
-import TransactionInput from './TransactionInput';
+import TransactionInput from '../components/TransactionInput';
 import Transaction from '../models/Transaction';
 import uuid from 'react-native-uuid';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {RootStackParamList} from '../interfaces';
 
-type Props = NativeStackScreenProps<RootStackParamList, 'TransactionsScreen'>;
+type Props = NativeStackScreenProps<RootStackParamList, 'TransactionAddScreen'>;
 
 const TransactionAddScreen = ({navigation}: Props) => {
   const addTransaction = async (

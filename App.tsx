@@ -6,20 +6,20 @@
  */
 
 import React from 'react';
-import TransactionsScreen from './components/TransactionsScreen';
+import TransactionsScreen from './screens/TransactionsScreen';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import TransactionAddScreen from './components/TransactionAddScreen';
+import TransactionAddScreen from './screens/TransactionAddScreen';
 import {RootStackParamList} from './interfaces';
-import HomeScreen from './components/HomeScreen';
+import HomeScreen from './screens/HomeScreen';
 
 const RootStack = createNativeStackNavigator<RootStackParamList>();
 
 const App = () => {
   return (
     <NavigationContainer>
-      <RootStack.Navigator initialRouteName="Home">
-        <RootStack.Screen name="Home" component={HomeScreen} />
+      <RootStack.Navigator initialRouteName="HomeScreen">
+        <RootStack.Screen name="HomeScreen" component={HomeScreen} />
         <RootStack.Screen
           name="TransactionsScreen"
           component={TransactionsScreen}

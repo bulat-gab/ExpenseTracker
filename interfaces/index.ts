@@ -1,5 +1,5 @@
 export type RootStackParamList = {
-  Home: undefined;
+  HomeScreen: undefined;
   TransactionsScreen: undefined;
   TransactionAddScreen: undefined;
 };
