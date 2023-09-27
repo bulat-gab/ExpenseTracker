@@ -85,7 +85,6 @@ const ExpensesScreen = ({route, navigation}: Props): JSX.Element => {
 
   return (
     <FlatList
-      style={styles.container}
       ListHeaderComponent={
         <Text style={styles.bigBlue}>Expenses by category: </Text>
       }
@@ -93,11 +92,9 @@ const ExpensesScreen = ({route, navigation}: Props): JSX.Element => {
       keyExtractor={item => item.category}
       renderItem={({item}) => (
         <View style={styles.container}>
-          <Text style={styles.category}>
-            {item.category}
-            <Text style={styles.percentage}> 100 %</Text>
-            <Text style={styles.amount}> {item.amount}</Text>
-          </Text>
+          <Text style={styles.category}>{item.category}</Text>
+          <Text style={styles.percentage}> 100 %</Text>
+          <Text style={styles.amount}> {item.amount}</Text>
         </View>
       )}
       ListFooterComponent={<></>}
@@ -107,7 +104,11 @@ const ExpensesScreen = ({route, navigation}: Props): JSX.Element => {
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 50,
+    marginTop: 20,
+    flex: 1,
+    flexDirection: 'row', // Arrange Text components horizontally
+    justifyContent: 'space-between', // Distribute Text components evenly
+    paddingHorizontal: 16, // Add horizontal padding to the container
   },
   bigBlue: {
     color: 'blue',
@@ -119,14 +120,17 @@ const styles = StyleSheet.create({
   },
   category: {
     fontWeight: 'bold',
+    fontSize: 25,
   },
   percentage: {
     color: 'blue',
     textAlign: 'center',
+    fontWeight: 'bold',
   },
   amount: {
     color: 'red',
     textAlign: 'right',
+    fontWeight: 'bold',
   },
 });
 
