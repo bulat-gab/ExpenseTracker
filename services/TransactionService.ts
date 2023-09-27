@@ -5,7 +5,7 @@ const GetTransactionsAsync = async () => {
   try {
     const allKeys: readonly string[] = await AsyncStorage.getAllKeys();
     if (allKeys === null || allKeys.length === 0) {
-      return;
+      return [];
     }
 
     const transactionsFromDb = [];
@@ -24,6 +24,7 @@ const GetTransactionsAsync = async () => {
     return transactionsFromDb;
   } catch (error) {
     console.error('Error:', error);
+    return [];
   }
 };
 

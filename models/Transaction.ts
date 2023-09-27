@@ -26,7 +26,7 @@ class Transaction {
     id: string;
     title: string;
     category: string;
-    date: Date;
+    date: string;
     amount: number;
     description?: string;
   }): Transaction {
@@ -38,7 +38,7 @@ class Transaction {
       transactionObject.id,
       transactionObject.title,
       transactionObject.category,
-      transactionObject.date,
+      new Date(transactionObject.date),
       transactionObject.amount,
       transactionObject.description,
     );

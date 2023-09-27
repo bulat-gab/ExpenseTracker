@@ -2,11 +2,24 @@ import {View, Text, FlatList, StyleSheet} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import transactionService from '../services/TransactionService';
 
+const dateTimeOptions = {
+  year: 'numeric',
+  month: 'numeric',
+  day: 'numeric',
+  hour: 'numeric',
+  minute: 'numeric',
+};
+
 const TransactionsScreen: React.FC = () => {
   const [transactions, setTransactions] = useState<any>([]);
 
   const fetchData = async () => {
     const fetchedTransactions = await transactionService.GetTransactionsAsync();
+
+    // sort by date descending (most recent first)
+    fetchedTransactions?.sort(
+      (a, b) => b.getDate().getTime() - a.getDate().getTime(),
+    );
     setTransactions(fetchedTransactions);
   };
 
@@ -34,7 +47,8 @@ const TransactionsScreen: React.FC = () => {
             <Text style={styles.label}>Category:</Text> {item.getCategory()}
           </Text>
           <Text>
-            <Text style={styles.label}>Date:</Text> {item.getDate().toString()}
+            <Text style={styles.label}>Date:</Text>{' '}
+            {item.getDate().toLocaleString(undefined, dateTimeOptions)}
           </Text>
         </View>
       )}
