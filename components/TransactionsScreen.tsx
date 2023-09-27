@@ -1,37 +1,13 @@
 import {View, Text, FlatList, StyleSheet} from 'react-native';
 import React, {useEffect, useState} from 'react';
-
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import Transaction from '../models/Transaction';
+import transactionService from '../services/TransactionService';
 
 const TransactionsScreen: React.FC = () => {
-  const [data, setData] = useState<any>([]);
+  const [transactions, setTransactions] = useState<any>([]);
 
   const fetchData = async () => {
-    try {
-      // Perform asynchronous operations here
-      const allKeys: readonly string[] = await AsyncStorage.getAllKeys();
-      if (allKeys === null || allKeys.length === 0) {
-        return;
-      }
-
-      const transactions = [];
-      for (let i = 0; i < allKeys.length; i++) {
-        const tx = await AsyncStorage.getItem(allKeys[i]);
-        if (tx === null) {
-          throw Error(`Key ${allKeys[i]} was not found.`);
-        }
-
-        const txObject = JSON.parse(tx);
-        const txTyped: Transaction = Transaction.createFromObject(txObject);
-        transactions.push(txTyped);
-      }
-
-      console.log('Expenses: ', transactions);
-      setData(transactions);
-    } catch (error) {
-      console.error('Error:', error);
-    }
+    const fetchedTransactions = await transactionService.GetTransactionsAsync();
+    setTransactions(fetchedTransactions);
   };
 
   useEffect(() => {
@@ -41,24 +17,24 @@ const TransactionsScreen: React.FC = () => {
   return (
     <FlatList
       ListHeaderComponent={<Text>Expenses: </Text>}
-      data={data}
-      keyExtractor={item => item.id}
+      data={transactions}
+      keyExtractor={item => item.getId()}
       renderItem={({item}) => (
         <View style={styles.transactionItem}>
           <Text>
-            <Text style={styles.label}>Id:</Text> {item.id}
+            <Text style={styles.label}>Id:</Text> {item.getId()}
           </Text>
           <Text>
-            <Text style={styles.label}>Title:</Text> {item.title}
+            <Text style={styles.label}>Title:</Text> {item.getTitle()}
           </Text>
           <Text>
-            <Text style={styles.label}>Amount:</Text> ${item.amount}
+            <Text style={styles.label}>Amount:</Text> ${item.getAmount()}
           </Text>
           <Text>
-            <Text style={styles.label}>Category:</Text> {item.category}
+            <Text style={styles.label}>Category:</Text> {item.getCategory()}
           </Text>
           <Text>
-            <Text style={styles.label}>Date:</Text> {item.date}
+            <Text style={styles.label}>Date:</Text> {item.getDate().toString()}
           </Text>
         </View>
       )}

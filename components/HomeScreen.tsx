@@ -11,11 +11,11 @@ const HomeScreen = ({navigation}: Props): JSX.Element => {
       <Text>Home Screen</Text>
       <Button
         title="Add transaction"
-        onPress={() => navigation.navigate('TransactionAddPage')}
+        onPress={() => navigation.navigate('TransactionAddScreen')}
       />
       <Button
         title="Transactions"
-        onPress={() => navigation.navigate('TransactionsPage')}
+        onPress={() => navigation.navigate('TransactionsScreen')}
       />
     </View>
   );
