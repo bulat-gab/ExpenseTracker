@@ -17,6 +17,10 @@ const HomeScreen = ({navigation}: Props): JSX.Element => {
         title="Transactions"
         onPress={() => navigation.navigate('TransactionsScreen')}
       />
+      <Button
+        title="Expenses"
+        onPress={() => navigation.navigate('ExpensesScreen')}
+      />
     </View>
   );
 };

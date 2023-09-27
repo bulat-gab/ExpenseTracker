@@ -12,6 +12,7 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import TransactionAddScreen from './screens/TransactionAddScreen';
 import {RootStackParamList} from './interfaces';
 import HomeScreen from './screens/HomeScreen';
+import ExpensesScreen from './screens/ExpensesScreen';
 
 const RootStack = createNativeStackNavigator<RootStackParamList>();
 
@@ -28,6 +29,7 @@ const App = () => {
           name="TransactionAddScreen"
           component={TransactionAddScreen}
         />
+        <RootStack.Screen name="ExpensesScreen" component={ExpensesScreen} />
       </RootStack.Navigator>
     </NavigationContainer>
   );
