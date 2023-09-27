@@ -93,8 +93,11 @@ const ExpensesScreen = ({route, navigation}: Props): JSX.Element => {
       keyExtractor={item => item.category}
       renderItem={({item}) => (
         <View style={styles.container}>
-          <Text> Category: {item.category}</Text>
-          <Text> Amount: {item.amount}</Text>
+          <Text style={styles.category}>
+            {item.category}
+            <Text style={styles.percentage}> 100 %</Text>
+            <Text style={styles.amount}> {item.amount}</Text>
+          </Text>
         </View>
       )}
       ListFooterComponent={<></>}
@@ -113,6 +116,17 @@ const styles = StyleSheet.create({
   },
   red: {
     color: 'red',
+  },
+  category: {
+    fontWeight: 'bold',
+  },
+  percentage: {
+    color: 'blue',
+    textAlign: 'center',
+  },
+  amount: {
+    color: 'red',
+    textAlign: 'right',
   },
 });
 
