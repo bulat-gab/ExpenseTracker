@@ -9,13 +9,19 @@ type Props = NativeStackScreenProps<RootStackParamList, 'ExpensesScreen'>;
 
 type AggregatedData = Record<
   string,
-  {totalAmount: number; transactions: Transaction[]}
+  {
+    totalAmount: number;
+    // transactions: Transaction[]
+  }
 >;
 
 const ExpensesScreen = ({route, navigation}: Props): JSX.Element => {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [categories, setCategories] = useState<string[]>([]);
-  const [expensesByCategory, setExpensesByCategory] = useState({});
+  const [expensesByCategory, setExpensesByCategory] = useState<
+    AggregatedData[]
+  >([]);
+  const [totalAmount, setTotalAmount] = useState<Number>(0);
 
   const fetchData = useCallback(async () => {
     const fetchedTransactions = await transactionService.GetTransactionsAsync();
@@ -25,6 +31,7 @@ const ExpensesScreen = ({route, navigation}: Props): JSX.Element => {
       (a, b) => b.getDate().getTime() - a.getDate().getTime(),
     );
     setTransactions(fetchedTransactions);
+    setTotalAmount(await transactionService.GetTotalAmountAsync());
   }, []);
 
   const fetchCategories = useCallback(async () => {
@@ -44,12 +51,12 @@ const ExpensesScreen = ({route, navigation}: Props): JSX.Element => {
       if (!aggregatedData[category]) {
         aggregatedData[category] = {
           totalAmount: 0,
-          transactions: [],
+          //   transactions: [],
         };
       }
 
       // Add the transaction to the category
-      aggregatedData[category].transactions.push(transaction);
+      //   aggregatedData[category].transactions.push(transaction);
 
       // Update the total amount for the category
       aggregatedData[category].totalAmount += amount;
@@ -57,16 +64,6 @@ const ExpensesScreen = ({route, navigation}: Props): JSX.Element => {
 
     setExpensesByCategory(aggregatedData);
   }, [transactions]);
-
-  //   useEffect(() => {
-  //     const processAll = () => {
-  //       fetchData();
-  //       fetchCategories();
-  //       aggregateData();
-  //     };
-
-  //     processAll();
-  //   }, [fetchData, fetchCategories, aggregateData]);
 
   useEffect(() => {
     fetchData();
@@ -80,6 +77,7 @@ const ExpensesScreen = ({route, navigation}: Props): JSX.Element => {
     myData.push({
       category: key,
       amount: value.totalAmount,
+      percentage: (value.totalAmount / totalAmount) * 100,
     });
   }
 
