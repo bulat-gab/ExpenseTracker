@@ -10,6 +10,13 @@ import {RootStackParamList} from '../interfaces';
 const cats = [
   {label: 'food', value: 'food'},
   {label: 'transport', value: 'transport'},
+  {label: 'house', value: 'house'},
+  {label: 'household', value: 'household'},
+  {label: 'utility', value: 'utility'},
+  {label: 'health', value: 'health'},
+  {label: 'education', value: 'education'},
+  {label: 'vacation', value: 'vacation'},
+  {label: 'sport', value: 'sport'},
   {label: 'other', value: 'other'},
 ];
 
