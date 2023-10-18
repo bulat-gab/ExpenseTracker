@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
-import {TextInput, View, Button, Alert} from 'react-native';
+import {TextInput, View, Button, Alert, StyleSheet} from 'react-native';
 
-import styles from '../Styles';
+import {Dropdown} from 'react-native-element-dropdown';
 
 interface TransactionInputProps {
   onAddTransaction: (
@@ -10,14 +10,19 @@ interface TransactionInputProps {
     amount: number,
     description?: string,
   ) => void;
+  categories: [];
 }
 
 const TransactionInput: React.FC<TransactionInputProps> = ({
   onAddTransaction,
+  categories,
 }) => {
   const [title, setTitle] = useState('');
-  const [category, setCategory] = useState('');
   const [amount, setAmount] = useState('');
+
+  // Dropdown menu
+  const [isFocus, setIsFocus] = useState(false);
+  const [category, setCategory] = useState('');
 
   const handleAddTransaction = () => {
     if (title && amount && category) {
@@ -29,6 +34,9 @@ const TransactionInput: React.FC<TransactionInputProps> = ({
       }
 
       onAddTransaction(title, category, parsedAmount);
+      setTitle('');
+      setAmount('');
+      setCategory('');
     } else {
       Alert.alert('Please fill in all fields.');
     }
@@ -49,11 +57,21 @@ const TransactionInput: React.FC<TransactionInputProps> = ({
         value={amount}
         onChangeText={text => setAmount(text)}
       />
-      <TextInput
-        style={styles.input}
-        placeholder="Category"
+      <Dropdown
+        style={[styles.dropdown, isFocus && {borderColor: 'blue'}]}
+        placeholderStyle={styles.placeholderStyle}
+        selectedTextStyle={styles.selectedTextStyle}
+        inputSearchStyle={styles.inputSearchStyle}
+        iconStyle={styles.iconStyle}
+        data={categories}
+        valueField="value"
         value={category}
-        onChangeText={text => setCategory(text)}
+        labelField="label"
+        onChange={item => {
+          setCategory(item.value);
+          setIsFocus(false);
+        }}
+        placeholder="Select category"
       />
       <Button title="Add Transaction" onPress={handleAddTransaction} />
     </View>
@@ -61,3 +79,50 @@ const TransactionInput: React.FC<TransactionInputProps> = ({
 };
 
 export default TransactionInput;
+
+const styles = StyleSheet.create({
+  container: {
+    backgroundColor: 'white',
+    padding: 16,
+  },
+  input: {
+    height: 40,
+    borderColor: 'gray',
+    borderWidth: 1,
+    marginBottom: 12,
+    paddingHorizontal: 8,
+  },
+  dropdown: {
+    height: 50,
+    borderColor: 'gray',
+    borderWidth: 0.5,
+    borderRadius: 8,
+    paddingHorizontal: 8,
+  },
+  icon: {
+    marginRight: 5,
+  },
+  label: {
+    position: 'absolute',
+    backgroundColor: 'white',
+    left: 22,
+    top: 8,
+    zIndex: 999,
+    paddingHorizontal: 8,
+    fontSize: 14,
+  },
+  placeholderStyle: {
+    fontSize: 16,
+  },
+  selectedTextStyle: {
+    fontSize: 16,
+  },
+  iconStyle: {
+    width: 20,
+    height: 20,
+  },
+  inputSearchStyle: {
+    height: 40,
+    fontSize: 16,
+  },
+});

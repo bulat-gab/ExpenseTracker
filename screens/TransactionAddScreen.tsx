@@ -9,7 +9,9 @@ import {RootStackParamList} from '../interfaces';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'TransactionAddScreen'>;
 
-const TransactionAddScreen = ({navigation}: Props) => {
+const TransactionAddScreen = ({navigation, route}: Props) => {
+  const {categories} = route.params;
+
   const addTransaction = async (
     title: string,
     category: string,
@@ -37,7 +39,10 @@ const TransactionAddScreen = ({navigation}: Props) => {
 
   return (
     <View>
-      <TransactionInput onAddTransaction={addTransaction} />
+      <TransactionInput
+        onAddTransaction={addTransaction}
+        categories={categories}
+      />
     </View>
   );
 };
