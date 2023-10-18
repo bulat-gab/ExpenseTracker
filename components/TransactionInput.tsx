@@ -25,12 +25,16 @@ const TransactionInput: React.FC<TransactionInputProps> = ({
   const [category, setCategory] = useState('');
 
   const handleAddTransaction = () => {
-    if (title && amount && category) {
+    if (amount && category) {
       const parsedAmount = parseFloat(amount);
 
       if (isNaN(parsedAmount)) {
         Alert.alert('Please enter a valid amount.');
         return;
+      }
+
+      if (!title) {
+        setTitle(category);
       }
 
       onAddTransaction(title, category, parsedAmount);
