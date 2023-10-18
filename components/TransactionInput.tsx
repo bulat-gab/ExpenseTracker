@@ -18,12 +18,11 @@ const TransactionInput: React.FC<TransactionInputProps> = ({
   categories,
 }) => {
   const [title, setTitle] = useState('');
-  const [category, setCategory] = useState('');
   const [amount, setAmount] = useState('');
 
   // Dropdown menu
-  const [value, setValue] = useState('');
   const [isFocus, setIsFocus] = useState(false);
+  const [category, setCategory] = useState('');
 
   const handleAddTransaction = () => {
     if (title && amount && category) {
@@ -35,6 +34,9 @@ const TransactionInput: React.FC<TransactionInputProps> = ({
       }
 
       onAddTransaction(title, category, parsedAmount);
+      setTitle('');
+      setAmount('');
+      setCategory('');
     } else {
       Alert.alert('Please fill in all fields.');
     }
@@ -55,12 +57,6 @@ const TransactionInput: React.FC<TransactionInputProps> = ({
         value={amount}
         onChangeText={text => setAmount(text)}
       />
-      <TextInput
-        style={styles.input}
-        placeholder="Category"
-        value={category}
-        onChangeText={text => setCategory(text)}
-      />
       <Dropdown
         style={[styles.dropdown, isFocus && {borderColor: 'blue'}]}
         placeholderStyle={styles.placeholderStyle}
@@ -69,10 +65,10 @@ const TransactionInput: React.FC<TransactionInputProps> = ({
         iconStyle={styles.iconStyle}
         data={categories}
         valueField="value"
-        value={value}
+        value={category}
         labelField="label"
         onChange={item => {
-          setValue(item.value);
+          setCategory(item.value);
           setIsFocus(false);
         }}
         placeholder="Select category"
