@@ -7,6 +7,12 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {RootStackParamList} from '../interfaces';
 
+const cats = [
+  {label: 'food', value: 'food'},
+  {label: 'transport', value: 'transport'},
+  {label: 'other', value: 'other'},
+];
+
 type Props = NativeStackScreenProps<RootStackParamList, 'TransactionAddScreen'>;
 
 const TransactionAddScreen = ({navigation}: Props) => {
@@ -37,7 +43,7 @@ const TransactionAddScreen = ({navigation}: Props) => {
 
   return (
     <View>
-      <TransactionInput onAddTransaction={addTransaction} />
+      <TransactionInput onAddTransaction={addTransaction} categories={cats} />
     </View>
   );
 };

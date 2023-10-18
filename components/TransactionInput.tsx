@@ -1,5 +1,5 @@
-import React, {useContext, useState} from 'react';
-import {TextInput, View, Button, Alert, StyleSheet, Text} from 'react-native';
+import React, {useState} from 'react';
+import {TextInput, View, Button, Alert, StyleSheet} from 'react-native';
 
 import {Dropdown} from 'react-native-element-dropdown';
 
@@ -10,15 +10,16 @@ interface TransactionInputProps {
     amount: number,
     description?: string,
   ) => void;
+  categories: [];
 }
 
 const TransactionInput: React.FC<TransactionInputProps> = ({
   onAddTransaction,
+  categories,
 }) => {
   const [title, setTitle] = useState('');
   const [category, setCategory] = useState('');
   const [amount, setAmount] = useState('');
-
 
   // Dropdown menu
   const [value, setValue] = useState('');
@@ -71,7 +72,7 @@ const TransactionInput: React.FC<TransactionInputProps> = ({
         value={value}
         labelField="label"
         onChange={item => {
-          setValue(item);
+          setValue(item.value);
           setIsFocus(false);
         }}
         placeholder="Select category"
