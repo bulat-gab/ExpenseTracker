@@ -1,7 +1,7 @@
-import React, {useState} from 'react';
-import {TextInput, View, Button, Alert} from 'react-native';
+import React, {useContext, useState} from 'react';
+import {TextInput, View, Button, Alert, StyleSheet, Text} from 'react-native';
 
-import styles from '../Styles';
+import {Dropdown} from 'react-native-element-dropdown';
 
 interface TransactionInputProps {
   onAddTransaction: (
@@ -18,6 +18,11 @@ const TransactionInput: React.FC<TransactionInputProps> = ({
   const [title, setTitle] = useState('');
   const [category, setCategory] = useState('');
   const [amount, setAmount] = useState('');
+
+
+  // Dropdown menu
+  const [value, setValue] = useState('');
+  const [isFocus, setIsFocus] = useState(false);
 
   const handleAddTransaction = () => {
     if (title && amount && category) {
@@ -55,9 +60,72 @@ const TransactionInput: React.FC<TransactionInputProps> = ({
         value={category}
         onChangeText={text => setCategory(text)}
       />
+      <Dropdown
+        style={[styles.dropdown, isFocus && {borderColor: 'blue'}]}
+        placeholderStyle={styles.placeholderStyle}
+        selectedTextStyle={styles.selectedTextStyle}
+        inputSearchStyle={styles.inputSearchStyle}
+        iconStyle={styles.iconStyle}
+        data={categories}
+        valueField="value"
+        value={value}
+        labelField="label"
+        onChange={item => {
+          setValue(item);
+          setIsFocus(false);
+        }}
+        placeholder="Select category"
+      />
       <Button title="Add Transaction" onPress={handleAddTransaction} />
     </View>
   );
 };
 
 export default TransactionInput;
+
+const styles = StyleSheet.create({
+  container: {
+    backgroundColor: 'white',
+    padding: 16,
+  },
+  input: {
+    height: 40,
+    borderColor: 'gray',
+    borderWidth: 1,
+    marginBottom: 12,
+    paddingHorizontal: 8,
+  },
+  dropdown: {
+    height: 50,
+    borderColor: 'gray',
+    borderWidth: 0.5,
+    borderRadius: 8,
+    paddingHorizontal: 8,
+  },
+  icon: {
+    marginRight: 5,
+  },
+  label: {
+    position: 'absolute',
+    backgroundColor: 'white',
+    left: 22,
+    top: 8,
+    zIndex: 999,
+    paddingHorizontal: 8,
+    fontSize: 14,
+  },
+  placeholderStyle: {
+    fontSize: 16,
+  },
+  selectedTextStyle: {
+    fontSize: 16,
+  },
+  iconStyle: {
+    width: 20,
+    height: 20,
+  },
+  inputSearchStyle: {
+    height: 40,
+    fontSize: 16,
+  },
+});
