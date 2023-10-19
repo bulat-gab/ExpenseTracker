@@ -1,54 +1,70 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Transaction from '../models/Transaction';
 
-let totalAmount: Number = -1;
+const transactionsKey = 'transactions';
+let totalAmount = -1;
+let lastId = -1;
+let cachedTransactions: Transaction[] = [];
 
 const GetTransactionsAsync = async () => {
   try {
-    const allKeys: readonly string[] = await AsyncStorage.getAllKeys();
-    if (allKeys === null || allKeys.length === 0) {
-      totalAmount = 0;
-      return [];
+    const jsonValue = await AsyncStorage.getItem(transactionsKey);
+    const parsedJson: [] = jsonValue != null ? JSON.parse(jsonValue) : [];
+
+    const transactions: Transaction[] = parsedJson.map(x =>
+      Transaction.createFromObject(x),
+    );
+
+    console.log('Transactions count: ', transactions.length);
+
+    totalAmount = transactions.length;
+    cachedTransactions = transactions;
+
+    if (transactions.length !== 0) {
+      lastId = transactions[transactions.length - 1].getId();
+    } else {
+      lastId = 0;
     }
-
-    const transactionsFromDb = [];
-    let totalAmountTemp = 0;
-
-    for (let i = 0; i < allKeys.length; i++) {
-      const tx = await AsyncStorage.getItem(allKeys[i]);
-      if (tx === null) {
-        throw Error(`Key ${allKeys[i]} was not found.`);
-      }
-
-      const txObject = JSON.parse(tx);
-      const txTyped: Transaction = Transaction.createFromObject(txObject);
-      transactionsFromDb.push(txTyped);
-      totalAmountTemp += txTyped.getAmount();
-    }
-
-    console.log('Expenses: ', transactionsFromDb);
-    totalAmount = totalAmountTemp;
-    return transactionsFromDb;
+    return transactions;
   } catch (error) {
-    console.error('Error:', error);
-    totalAmount = 0;
+    console.log(
+      'Error occured while fetching transactions from the db: ',
+      error,
+    );
     return [];
   }
 };
 
+const AddTransactionAsync = async (tx: Transaction) => {
+  try {
+    cachedTransactions.push(tx);
+    const jsonValue = JSON.stringify(cachedTransactions);
+    await AsyncStorage.setItem(transactionsKey, jsonValue);
+    lastId = lastId + 1;
+    console.log('Transaction added, id: ', tx.getId());
+  } catch (error) {
+    console.log('Error occured while adding a transaction to the db: ', error);
+  }
+};
+
 const GetTotalAmountAsync = async () => {
-  if (totalAmount !== -1) {
-    return totalAmount;
+  if (totalAmount === -1) {
+    await GetTransactionsAsync();
   }
 
-  await GetTransactionsAsync();
   console.log('Total amount: ', totalAmount);
   return totalAmount;
 };
 
+const GetLastId = () => {
+  return lastId;
+};
+
 const transactionService = {
   GetTransactionsAsync,
+  AddTransactionAsync,
   GetTotalAmountAsync,
+  GetLastId,
 };
 
 export default transactionService;

@@ -1,5 +1,5 @@
 class Transaction {
-  private readonly id: string;
+  private readonly id: number;
   private readonly title: string;
   private readonly category: string;
   private readonly date: Date;
@@ -7,7 +7,7 @@ class Transaction {
   private readonly amount: number;
 
   constructor(
-    id: string,
+    id: number,
     title: string,
     category: string,
     date: Date,
@@ -23,7 +23,7 @@ class Transaction {
   }
 
   static createFromObject(transactionObject: {
-    id: string;
+    id: number;
     title: string;
     category: string;
     date: string;
@@ -44,7 +44,7 @@ class Transaction {
     );
   }
 
-  getId(): string {
+  getId(): number {
     return this.id;
   }
 
