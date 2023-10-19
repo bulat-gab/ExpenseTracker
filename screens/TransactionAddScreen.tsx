@@ -16,15 +16,16 @@ const TransactionAddScreen = ({navigation, route}: Props) => {
     title: string,
     category: string,
     amount: number,
+    date?: Date,
   ) => {
     try {
       const id = uuid.v4().toString();
-      const date = new Date();
+      const txDate = date ?? new Date();
       const newTransaction: Transaction = new Transaction(
         id,
         title,
         category,
-        date,
+        txDate,
         amount,
       );
 

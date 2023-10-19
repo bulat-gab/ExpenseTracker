@@ -1,16 +1,20 @@
 import React, {useState} from 'react';
-import {TextInput, View, Button, Alert, StyleSheet} from 'react-native';
+import {TextInput, View, Button, Alert, StyleSheet, Text} from 'react-native';
 
 import {Dropdown} from 'react-native-element-dropdown';
+import {MyCategory} from '../models/Category';
+
+import DateTimePicker from '@react-native-community/datetimepicker';
 
 interface TransactionInputProps {
   onAddTransaction: (
     title: string,
     category: string,
     amount: number,
+    date?: Date,
     description?: string,
   ) => void;
-  categories: [];
+  categories: MyCategory[];
 }
 
 const TransactionInput: React.FC<TransactionInputProps> = ({
@@ -20,12 +24,26 @@ const TransactionInput: React.FC<TransactionInputProps> = ({
   const [title, setTitle] = useState('');
   const [amount, setAmount] = useState('');
 
-  // Dropdown menu
+  // Category Dropdown menu
   const [isFocus, setIsFocus] = useState(false);
   const [category, setCategory] = useState('');
 
+  // Date Picker
+  const [date, setDate] = useState(new Date());
+  const [showDatePicker, setShowDatePicker] = useState(false);
+
+  const onDateChange = (event, selectedDate) => {
+    const currentDate = selectedDate;
+    setShowDatePicker(false);
+    setDate(currentDate);
+  };
+
+  const showDatepicker = () => {
+    setShowDatePicker(true);
+  };
+
   const handleAddTransaction = () => {
-    if (title && amount && category) {
+    if (amount && category) {
       const parsedAmount = parseFloat(amount);
 
       if (isNaN(parsedAmount)) {
@@ -33,7 +51,11 @@ const TransactionInput: React.FC<TransactionInputProps> = ({
         return;
       }
 
-      onAddTransaction(title, category, parsedAmount);
+      if (!title) {
+        setTitle(category);
+      }
+
+      onAddTransaction(title, category, parsedAmount, date);
       setTitle('');
       setAmount('');
       setCategory('');
@@ -73,6 +95,16 @@ const TransactionInput: React.FC<TransactionInputProps> = ({
         }}
         placeholder="Select category"
       />
+      <Button onPress={showDatepicker} title="Choose Date" />
+      <Text>selected: {date.toLocaleString()}</Text>
+      {showDatePicker && (
+        <DateTimePicker
+          testID="dateTimePicker"
+          value={date}
+          is24Hour={true}
+          onChange={onDateChange}
+        />
+      )}
       <Button title="Add Transaction" onPress={handleAddTransaction} />
     </View>
   );
