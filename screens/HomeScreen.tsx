@@ -1,7 +1,7 @@
 import React from 'react';
-import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {RootStackParamList} from '../interfaces';
+import {RootParamList} from '../interfaces';
 import {Button, Text, View} from 'react-native';
+import {BottomTabScreenProps} from '@react-navigation/bottom-tabs/lib/typescript/src/types';
 
 const categories = [
   {label: 'food', value: 'food'},
@@ -16,13 +16,13 @@ const categories = [
   {label: 'other', value: 'other'},
 ];
 
-type Props = NativeStackScreenProps<RootStackParamList, 'HomeScreen'>;
+type Props = BottomTabScreenProps<RootParamList, 'HomeScreen'>;
 
 const HomeScreen = ({navigation}: Props): JSX.Element => {
   return (
     <View>
       <Text>Home Screen</Text>
-      <Button
+      {/* <Button
         title="Add transaction"
         onPress={() =>
           navigation.navigate('TransactionAddScreen', {categories: categories})
@@ -35,7 +35,7 @@ const HomeScreen = ({navigation}: Props): JSX.Element => {
       <Button
         title="Expenses"
         onPress={() => navigation.navigate('ExpensesScreen')}
-      />
+      /> */}
     </View>
   );
 };

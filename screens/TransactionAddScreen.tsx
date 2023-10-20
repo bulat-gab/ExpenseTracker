@@ -2,11 +2,12 @@ import {View} from 'react-native';
 import React from 'react';
 import TransactionInput from '../components/TransactionInput';
 import Transaction from '../models/Transaction';
-import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {RootStackParamList} from '../interfaces';
-import transactionService from '../services/TransactionService';
+import uuid from 'react-native-uuid';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {RootParamList} from '../interfaces';
+import {BottomTabScreenProps} from '@react-navigation/bottom-tabs';
 
-type Props = NativeStackScreenProps<RootStackParamList, 'TransactionAddScreen'>;
+type Props = BottomTabScreenProps<RootParamList, 'TransactionAddScreen'>;
 
 const TransactionAddScreen = ({navigation, route}: Props) => {
   const {categories} = route.params;
@@ -18,17 +19,19 @@ const TransactionAddScreen = ({navigation, route}: Props) => {
     date?: Date,
   ) => {
     try {
-      const id = transactionService.GetLastId() + 1;
+      const id = uuid.v4().toString();
+      const txDate = date ?? new Date();
       const newTransaction: Transaction = new Transaction(
         id,
         title,
         category,
-        date ?? new Date(),
+        txDate,
         amount,
       );
 
-      await transactionService.AddTransactionAsync(newTransaction);
+      console.log(newTransaction);
 
+      await AsyncStorage.setItem(id, JSON.stringify(newTransaction));
       navigation.navigate('TransactionsScreen');
     } catch (error) {
       console.error('Error storing transaction:', error);

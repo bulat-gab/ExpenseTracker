@@ -1,6 +1,6 @@
 import {MyCategory} from '../models/Category';
 
-export type RootStackParamList = {
+export type RootParamList = {
   HomeScreen: undefined;
   TransactionsScreen: undefined;
   TransactionAddScreen: {categories: MyCategory[]};

@@ -1,11 +1,11 @@
 import React, {useCallback, useEffect, useState} from 'react';
-import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {RootStackParamList} from '../interfaces';
+import {RootParamList} from '../interfaces';
 import {FlatList, StyleSheet, Text, View} from 'react-native';
 import transactionService from '../services/TransactionService';
 import Transaction from '../models/Transaction';
+import {BottomTabScreenProps} from '@react-navigation/bottom-tabs/lib/typescript/src/types';
 
-type Props = NativeStackScreenProps<RootStackParamList, 'ExpensesScreen'>;
+type Props = BottomTabScreenProps<RootParamList, 'ExpensesScreen'>;
 
 type AggregatedData = Record<
   string,
